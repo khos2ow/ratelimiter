@@ -54,6 +54,7 @@ ratelimiter \
     --rate-limit <number> \
     --rate-interval <number> \
     --rate-timeunit <time-unit> \
+    --use-redis <use-redis-or-in-memory-cache> \
     --redis-url <ip-of-redis> \
     --redis-port <port-of-redis> \
     --redis-password <password-for-redis> \
@@ -75,6 +76,7 @@ You can also use environment variables defined on the host instead of using the 
 | `RATE_LIMIT`     | `--rate-limit`     |
 | `RATE_INTERVAL`  | `--rate-interval`  |
 | `RATE_TIMEUNIT`  | `--rate-timeunit`  |
+| `USE_REDIS`      | `--use-redis`      |
 | `REDIS_URL`      | `--redis-url`      |
 | `REDIS_PORT`     | `--redis-port`     |
 | `REDIS_PASSWORD` | `--redis-password` |
@@ -99,6 +101,7 @@ docker run -d \
     -e RATE_LIMIT=<number> \
     -e RATE_INTERVAL=<number> \
     -e RATE_TIMEUNIT=<time-unit> \
+    -e USE_REDIS=<use-redis-or-in-memory-cache> \
     -e REDIS_URL=<ip-of-redis> \
     -e REDIS_PORT=<port-of-redis> \
     -e REDIS_PASSWORD=<password-for-redis> \
@@ -128,6 +131,7 @@ Prerequisites
       RATE_LIMIT: "<RATE.LIMIT>"
       RATE_INTERVAL: "<RATE.INTERVAL>"
       RATE_TIMEUNIT: "<RATE.TIMEUNIT>"
+      USE_REDIS: "true | false"
       REDIS_URL: "<REDIS.URL>"
       REDIS_PORT: "<REDIS.PORT>"
       BACKEND_SERVER: ""

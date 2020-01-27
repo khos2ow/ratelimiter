@@ -50,6 +50,11 @@ spec:
             configMapKeyRef:
               name: rate-limiter-config
               key: RATE_TIMEUNIT
+        - name: USE_REDIS
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: USE_REDIS
         - name: REDIS_URL
           valueFrom:
             configMapKeyRef:
