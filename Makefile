@@ -123,7 +123,8 @@ up: PORT := 8000
 up: image ## Build and run Docker image
 	@ $(MAKE) --no-print-directory log-$@
 	docker run \
-		-p $(PORT):8000 \
+		--publish $(PORT):8000 \
+		--network host \
 		$(DOCKER_IMAGE):$(DOCKER_TAG)
 
 .PHONY: push

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/khos2ow/ratelimiter/internal/data"
+	"github.com/khos2ow/ratelimiter/internal/server"
 	"github.com/khos2ow/ratelimiter/internal/version"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -26,7 +27,7 @@ var rootCmd = &cobra.Command{
 		if err := store.Connect(); err != nil {
 			return err
 		}
-		return nil
+		return server.Start(backends)
 	},
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		if url, exists := os.LookupEnv("REDIS_URL"); exists && url != "" {
