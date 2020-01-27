@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rate-limiter
+  namespace: rate-limiter
+  labels:
+    app: rate-limiter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rate-limiter
+  template:
+    metadata:
+      labels:
+        app: rate-limiter
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: ratelimiter
+        image: khos2ow/ratelimiter:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8000
+        # - name: https
+        #   containerPort: 8443
+        #   protocol: TCP
+        resources:
+        #   limits:
+        #     cpu: 1
+        #     memory: 400Mi
+        #   requests:
+        #     cpu: 200m
+        #     memory: 100Mi
+        env:
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: REDIS_URL
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: REDIS_PORT
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rate-limiter-secret
+              key: REDIS_PASSWORD
+        - name: BACKEND_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: BACKEND_SERVER
+        # volumeMounts:
+        # - name: volume-ssl
+        #   mountPath: /app/ssl/
+        #   readOnly: true
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+      # volumes:
+      # - name: volume-ssl
+      #   secret:
+      #     secretName: rate-limiter-cert

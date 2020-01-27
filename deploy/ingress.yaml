@@ -1,0 +1,19 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: rate-limiter
+  namespace: rate-limiter
+  labels:
+    app: rate-limiter
+  annotations:
+    kubernetes.io/ingress.class: nginx-internal
+spec:
+  rules:
+  - host: rate-limiter.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: rate-limiter-service
+          servicePort: http
