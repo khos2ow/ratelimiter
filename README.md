@@ -4,6 +4,7 @@
 
 - A command line interface ([`ratelimiter`](./main.go)) built on these packages.
 - Docker [image](./images) to run ratelimiter in a containerized workload.
+- Go package implementing [rate limiting](./limiter.go), which can directly be used in other projects.
 
 ## Table of Contents
 
@@ -12,6 +13,7 @@
   - [CLI binary](#cli-binary)
   - [Docker Container](#docker-container)
   - [Kubernetes](#kubernetes)
+- [Go Package](#go-package)
 
 ## Installation
 
@@ -49,6 +51,9 @@ You can run ratelimiter binary with provided flags as standalone binary:
 
 ```bash
 ratelimiter \
+    --rate-limit <number> \
+    --rate-interval <number> \
+    --rate-timeunit <time-unit> \
     --redis-url <ip-of-redis> \
     --redis-port <port-of-redis> \
     --redis-password <password-for-redis> \
@@ -67,6 +72,9 @@ You can also use environment variables defined on the host instead of using the 
 
 | Name             | Flag               |
 |------------------|--------------------|
+| `RATE_LIMIT`     | `--rate-limit`     |
+| `RATE_INTERVAL`  | `--rate-interval`  |
+| `RATE_TIMEUNIT`  | `--rate-timeunit`  |
 | `REDIS_URL`      | `--redis-url`      |
 | `REDIS_PORT`     | `--redis-port`     |
 | `REDIS_PASSWORD` | `--redis-password` |
@@ -88,6 +96,9 @@ and you can simply use the image:
 
 ```bash
 docker run -d \
+    -e RATE_LIMIT=<number> \
+    -e RATE_INTERVAL=<number> \
+    -e RATE_TIMEUNIT=<time-unit> \
     -e REDIS_URL=<ip-of-redis> \
     -e REDIS_PORT=<port-of-redis> \
     -e REDIS_PASSWORD=<password-for-redis> \
@@ -114,6 +125,9 @@ Prerequisites
       labels:
         app: rate-limiter
     data:
+      RATE_LIMIT: "<RATE.LIMIT>"
+      RATE_INTERVAL: "<RATE.INTERVAL>"
+      RATE_TIMEUNIT: "<RATE.TIMEUNIT>"
       REDIS_URL: "<REDIS.URL>"
       REDIS_PORT: "<REDIS.PORT>"
       BACKEND_SERVER: ""
@@ -162,4 +176,18 @@ then you can deploy using `kubectl`:
 
 ```bash
 kubectl apply -f deploy -n rate-limiter
+```
+
+## Go Package
+
+ratelimiter exposes most of its functionality through Go Package which can be imported in other projects. To do that you can use package manager of your choice:
+
+```bash
+GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.0.1
+```
+
+and then
+
+```go
+import "github.com/khos2ow/ratelimiter"
 ```

@@ -23,6 +23,7 @@ func resourcesHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	resource := vars["resource"]
 	// TODO do rate limit here
+	// if limiter.IsAllowed() {
 	if true {
 		write(w, http.StatusOK, fmt.Sprintf("OK: '%s' content.", resource))
 	} else {

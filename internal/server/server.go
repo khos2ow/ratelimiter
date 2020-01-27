@@ -6,13 +6,14 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/khos2ow/ratelimiter"
 	"github.com/sirupsen/logrus"
 )
 
 // Start starts internal http server and processes the requests.
 // If `options.BackendServers` is passed it will act as a proxy
 // and forwards requests to the backend server(s).
-func Start(backends []string) error {
+func Start(backends []string, limiter *ratelimiter.Limiter) error {
 	logrus.Info("Starting server...")
 	if len(backends) > 0 {
 		// TODO add LB functionality against provided list of `backends`

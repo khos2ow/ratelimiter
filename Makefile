@@ -104,7 +104,7 @@ test: ## Run tests
 .PHONY: build
 build: clean ## Build binary for current OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME) $(PACKAGE)
+	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME) $(PACKAGE)/cmd
 
 .PHONY: build-all
 build-all: GOOS   = linux darwin windows freebsd
@@ -119,10 +119,16 @@ image: ## Build Docker image
 	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file images/Dockerfile .
 
 .PHONY: up
-up: PORT := 8000
+up: PORT          := 8000
+up: RATE_LIMIT    := 100
+up: RATE_INTERVAL := 1
+up: RATE_TIMEUNIT := m
 up: image ## Build and run Docker image
 	@ $(MAKE) --no-print-directory log-$@
 	docker run \
+		-e RATE_LIMIT=$(RATE_LIMIT) \
+		-e RATE_INTERVAL=$(RATE_INTERVAL) \
+		-e RATE_TIMEUNIT=$(RATE_TIMEUNIT) \
 		--publish $(PORT):8000 \
 		--network host \
 		$(DOCKER_IMAGE):$(DOCKER_TAG)

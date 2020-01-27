@@ -1,10 +1,13 @@
-package cmd
+package ratelimiter
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/khos2ow/ratelimiter"
 	"github.com/khos2ow/ratelimiter/internal/data"
 	"github.com/khos2ow/ratelimiter/internal/server"
 	"github.com/khos2ow/ratelimiter/internal/version"
@@ -12,8 +15,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type ruleflag struct {
+	Limit    int
+	Interval int
+	Unit     string
+}
+
 var backends []string
 var options = &data.Options{}
+var rf = &ruleflag{}
 
 var rootCmd = &cobra.Command{
 	Args:         cobra.NoArgs,
@@ -27,14 +37,39 @@ var rootCmd = &cobra.Command{
 		if err := store.Connect(); err != nil {
 			return err
 		}
-		return server.Start(backends)
+		timeunit, err := convert(rf.Unit)
+		if err != nil {
+			return err
+		}
+		rule := ratelimiter.NewRule(rf.Limit, rf.Interval, timeunit)
+		limiter := ratelimiter.NewLimiter(rule, store)
+		return server.Start(backends, limiter)
 	},
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if rl, exists := os.LookupEnv("RATE_LIMIT"); exists && rl != "" {
+			if i, err := strconv.Atoi(rl); err == nil {
+				rf.Limit = i
+			}
+		}
+		if ri, exists := os.LookupEnv("RATE_INTERVAL"); exists && ri != "" {
+			if i, err := strconv.Atoi(ri); err == nil {
+				rf.Interval = i
+			}
+		}
+		if ru, exists := os.LookupEnv("RATE_TIMEUNIT"); exists && ru != "" {
+			rf.Unit = ru
+		}
+		if rf.Limit == 0 {
+			return fmt.Errorf("invalid value '0' for --rate-limit")
+		}
+		if rf.Interval == 0 {
+			return fmt.Errorf("invalid value '0' for --rate-interval")
+		}
 		if url, exists := os.LookupEnv("REDIS_URL"); exists && url != "" {
 			options.RedisURL = url
 		}
 		if port, exists := os.LookupEnv("REDIS_PORT"); exists && port != "" {
-			if i, err := strconv.Atoi(port); err != nil {
+			if i, err := strconv.Atoi(port); err == nil {
 				options.RedisPort = i
 			}
 		}
@@ -48,7 +83,25 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+func convert(u string) (time.Duration, error) {
+	switch u {
+	case "ms":
+		return time.Millisecond, nil
+	case "s":
+		return time.Second, nil
+	case "m":
+		return time.Minute, nil
+	case "h":
+		return time.Hour, nil
+	}
+	return 0, fmt.Errorf("unknown value '%s' for --rate-timeunit", u)
+}
+
 func configure() *cobra.Command {
+	rootCmd.PersistentFlags().IntVar(&rf.Limit, "rate-limit", 0, "Maximum number of hits to allow in every unit of time")
+	rootCmd.PersistentFlags().IntVar(&rf.Interval, "rate-interval", 0, "Interval for limiting hits every unit of time in")
+	rootCmd.PersistentFlags().StringVar(&rf.Unit, "rate-timeunit", "s", "Unit of time for limiting hits in each interval [ms, s, m, h]")
+
 	rootCmd.PersistentFlags().StringVar(&options.RedisURL, "redis-url", "127.0.0.1", "Redis URL")
 	rootCmd.PersistentFlags().IntVar(&options.RedisPort, "redis-port", 6379, "Redis port")
 	rootCmd.PersistentFlags().StringVar(&options.RedisPassword, "redis-password", "", "Redis password")

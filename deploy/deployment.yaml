@@ -35,6 +35,21 @@ spec:
         #     cpu: 200m
         #     memory: 100Mi
         env:
+        - name: RATE_LIMIT
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: RATE_LIMIT
+        - name: RATE_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: RATE_INTERVAL
+        - name: RATE_TIMEUNIT
+          valueFrom:
+            configMapKeyRef:
+              name: rate-limiter-config
+              key: RATE_TIMEUNIT
         - name: REDIS_URL
           valueFrom:
             configMapKeyRef:

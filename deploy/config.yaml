@@ -7,6 +7,9 @@ metadata:
   labels:
     app: rate-limiter
 data:
+  RATE_LIMIT: "<RATE.LIMIT>"
+  RATE_INTERVAL: "<RATE.INTERVAL>"
+  RATE_TIMEUNIT: "<RATE.TIMEUNIT>"
   REDIS_URL: "<REDIS.URL>"
   REDIS_PORT: "<REDIS.PORT>"
   BACKEND_SERVER: ""

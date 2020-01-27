@@ -29,7 +29,7 @@ CGO_ENABLED=0 gox \
     -os="${GOOS}" \
     -arch="${GOARCH}" \
     -osarch="!darwin/arm" \
-    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/{{.Dir}}" ${PWD}/../../
+    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/ratelimiter" ${PWD}/../../cmd
 
 printf "\033[36m==> Finalize binary\033[0m\n"
 
@@ -39,12 +39,12 @@ for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
 
     case "${OSARCH}" in
     "windows"*)
-        mv ${platform}/${NAME}.exe ${BUILD_DIR}/${FULLNAME}.exe
+        cp ${platform}/${NAME}.exe ${BUILD_DIR}/${FULLNAME}.exe
         printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}.exe"
 
         ;;
     *)
-        mv ${platform}/${NAME} ${BUILD_DIR}/${FULLNAME}
+        cp ${platform}/${NAME} ${BUILD_DIR}/${FULLNAME}
         printf -- "--> %15s: bin/%s\n" "${OSARCH}" "${FULLNAME}"
 
         ;;
