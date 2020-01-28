@@ -218,10 +218,6 @@ func main() {
         panic(err)
     }
 
-    if err := limiter.Register(resource); err != nil {
-        panic(err)
-    }
-
     start := time.Now()
     fmt.Printf("limiting resource '%s' to %s\n\n", resource, rule.String())
 
