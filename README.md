@@ -222,7 +222,7 @@ func main() {
     fmt.Printf("limiting resource '%s' to %s\n\n", resource, rule.String())
 
     for i := 0; i < 25; i++ {
-        fmt.Printf("hit #%d\t\tallowed: %v\n", i+1, limiter.IsAllowed(resource))
+        fmt.Printf("hit #%-10dallowed: %-10velapsed: %f seconds\n", i+1, limiter.IsAllowed(resource), time.Now().Sub(start).Seconds())
         time.Sleep(80 * time.Millisecond)
     }
 
@@ -231,31 +231,31 @@ func main() {
 
 // limiting resource 'foo' to 10 hits per second
 //
-// hit #1          allowed: true
-// hit #2          allowed: true
-// hit #3          allowed: true
-// hit #4          allowed: true
-// hit #5          allowed: true
-// hit #6          allowed: true
-// hit #7          allowed: true
-// hit #8          allowed: true
-// hit #9          allowed: true
-// hit #10         allowed: true
-// hit #11         allowed: false
-// hit #12         allowed: false
-// hit #13         allowed: false
-// hit #14         allowed: true
-// hit #15         allowed: true
-// hit #16         allowed: true
-// hit #17         allowed: true
-// hit #18         allowed: true
-// hit #19         allowed: true
-// hit #20         allowed: true
-// hit #21         allowed: true
-// hit #22         allowed: true
-// hit #23         allowed: true
-// hit #24         allowed: true
-// hit #25         allowed: false
+// hit #1         allowed: true      elapsed: 0.000012 seconds
+// hit #2         allowed: true      elapsed: 0.080239 seconds
+// hit #3         allowed: true      elapsed: 0.160510 seconds
+// hit #4         allowed: true      elapsed: 0.240883 seconds
+// hit #5         allowed: true      elapsed: 0.321136 seconds
+// hit #6         allowed: true      elapsed: 0.401298 seconds
+// hit #7         allowed: true      elapsed: 0.481417 seconds
+// hit #8         allowed: true      elapsed: 0.561576 seconds
+// hit #9         allowed: true      elapsed: 0.641844 seconds
+// hit #10        allowed: true      elapsed: 0.722082 seconds
+// hit #11        allowed: false     elapsed: 0.802300 seconds
+// hit #12        allowed: false     elapsed: 0.882519 seconds
+// hit #13        allowed: false     elapsed: 0.962731 seconds
+// hit #14        allowed: true      elapsed: 1.042958 seconds
+// hit #15        allowed: true      elapsed: 1.123172 seconds
+// hit #16        allowed: true      elapsed: 1.203390 seconds
+// hit #17        allowed: true      elapsed: 1.283565 seconds
+// hit #18        allowed: true      elapsed: 1.363771 seconds
+// hit #19        allowed: true      elapsed: 1.443981 seconds
+// hit #20        allowed: true      elapsed: 1.524204 seconds
+// hit #21        allowed: true      elapsed: 1.604430 seconds
+// hit #22        allowed: true      elapsed: 1.684739 seconds
+// hit #23        allowed: true      elapsed: 1.764983 seconds
+// hit #24        allowed: true      elapsed: 1.845355 seconds
+// hit #25        allowed: false     elapsed: 1.925563 seconds
 //
 // took 2.009465 seconds
 ```
