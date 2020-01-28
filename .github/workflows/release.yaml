@@ -34,3 +34,24 @@ jobs:
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish Image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.13.x
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.x
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Build Docker image and publish to DockerHub
+      run: |
+        echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin
+        make image push
+      env:
+        REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+        REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}

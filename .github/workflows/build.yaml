@@ -64,3 +64,19 @@ jobs:
 
     - name: Build binary for current OS/ARCH
       run: make build
+
+  image:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.13.x
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.x
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Build Docker image
+      run: make image
