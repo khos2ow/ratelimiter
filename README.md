@@ -20,7 +20,7 @@
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="off" go get github.com/khos2ow/ratelimiter@v0.0.1
+GO111MODULE="off" go get github.com/khos2ow/ratelimiter@v0.1.0
 ```
 
 **NOTE:** please use the latest go to do this, ideally go 1.13.5 or greater.
@@ -34,7 +34,7 @@ $(go env GOPATH)/src/github.com/khos2ow/ratelimiter/bin/$(uname | tr '[:upper:]'
 Stable binaries are also available on the [releases](https://github.com/khos2ow/ratelimiter/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./ratelimiter https://github.com/khos2ow/ratelimiter/releases/download/v0.0.1/ratelimiter-v0.0.1-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./ratelimiter https://github.com/khos2ow/ratelimiter/releases/download/v0.1.0/ratelimiter-v0.1.0-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./ratelimiter
 mv ./ratelimiter /some-dir-in-your-PATH/ratelimiter
 ```
@@ -187,7 +187,7 @@ kubectl apply -f deploy -n rate-limiter
 ratelimiter exposes most of its functionality through Go Package which can be imported in other projects. To do that you can use package manager of your choice:
 
 ```bash
-GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.0.1
+GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.1.0
 ```
 
 and then
