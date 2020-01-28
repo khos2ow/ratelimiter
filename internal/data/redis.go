@@ -2,6 +2,7 @@ package data
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/go-redis/redis/v7"
 	"github.com/sirupsen/logrus"
@@ -30,13 +31,28 @@ func (r Redis) Connect() error {
 	return nil
 }
 
+// Has checks if the record with provided 'key' exists in the database
+func (r Redis) Has(key string) bool {
+	return true
+}
+
 // Get gets a value from Redis based on provided key
-func (r Redis) Get(key string) string {
-	return ""
+func (r Redis) Get(key string) (time.Time, int, error) {
+	return time.Time{}, 0, nil
 }
 
 // Put saves a new key/value to Redis
-func (r Redis) Put(key string, value string) error {
+func (r Redis) Put(key string) error {
+	return nil
+}
+
+// Delete delete a key/value from Redis
+func (r Redis) Delete(key string) error {
+	return nil
+}
+
+// Update updates value of a key in Redis
+func (r Redis) Update(key string) error {
 	return nil
 }
 

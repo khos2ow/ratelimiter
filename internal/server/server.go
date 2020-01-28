@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/khos2ow/ratelimiter"
+	"github.com/khos2ow/ratelimiter/internal/version"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,11 +22,14 @@ func Start(backends []string, limiter *ratelimiter.Limiter) error {
 	}
 
 	router := mux.NewRouter()
+	handler := &resourcesHandler{
+		limiter: limiter,
+	}
 
 	router.HandleFunc("/", rootHandler)
 	router.HandleFunc("/version", versionHandler)
 	router.HandleFunc("/healthz", healthHandler)
-	router.HandleFunc("/{resource}", resourcesHandler)
+	router.Handle("/{resource}", handler)
 
 	server := &http.Server{
 		Addr:         ":8000",
@@ -37,4 +41,23 @@ func Start(backends []string, limiter *ratelimiter.Limiter) error {
 		return err
 	}
 	return nil
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	write(w, http.StatusOK, "OK: 'root' content.")
+}
+func versionHandler(w http.ResponseWriter, r *http.Request) {
+	write(w, http.StatusOK, version.Full())
+}
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	write(w, http.StatusOK, "OK!")
+}
+
+func write(w http.ResponseWriter, status int, content string) int {
+	w.WriteHeader(status)
+	b, err := w.Write([]byte(content))
+	if err != nil {
+		logrus.Error(err)
+	}
+	return b
 }

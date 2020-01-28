@@ -98,8 +98,6 @@ func datastore(useredis bool) data.Store {
 
 func convert(u string) (time.Duration, error) {
 	switch u {
-	case "ms":
-		return time.Millisecond, nil
 	case "s":
 		return time.Second, nil
 	case "m":
@@ -113,7 +111,7 @@ func convert(u string) (time.Duration, error) {
 func configure() *cobra.Command {
 	rootCmd.PersistentFlags().IntVar(&flags.Limit, "rate-limit", 0, "Maximum number of hits to allow in every unit of time")
 	rootCmd.PersistentFlags().IntVar(&flags.Interval, "rate-interval", 0, "Interval for limiting hits every unit of time in")
-	rootCmd.PersistentFlags().StringVar(&flags.Unit, "rate-timeunit", "s", "Unit of time for limiting hits in each interval [ms, s, m, h]")
+	rootCmd.PersistentFlags().StringVar(&flags.Unit, "rate-timeunit", "s", "Unit of time for limiting hits in each interval [s, m, h]")
 
 	rootCmd.PersistentFlags().BoolVar(&flags.UseRedis, "use-redis", true, "Use Redis instead of in-memory cache [true, false]")
 	rootCmd.PersistentFlags().StringVar(&options.RedisURL, "redis-url", "127.0.0.1", "Redis URL")
