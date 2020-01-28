@@ -57,6 +57,10 @@ function getClosestVersion() {
 }
 CLOSEST_VERSION=$(getClosestVersion)
 
+if [ -z "$CLOSEST_VERSION" ]; then
+    CLOSEST_VERSION="v0.0.1"
+fi
+
 # Bump the released version in README and version.go
 sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' README.md
 sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' deploy/deployment.yaml
@@ -64,7 +68,7 @@ sed -i -E 's|v'${RELEASE_VERSION}'-alpha|v'${RELEASE_VERSION}'|g' internal/versi
 
 # Commit changes
 printf "\033[36m==> %s\033[0m\n" "Commit changes for release version v${RELEASE_VERSION}"
-git add README.md deploy/deployment.yaml internal/pkg/version/version.go
+git add README.md deploy/deployment.yaml internal/version/version.go
 git commit -m "Release version v${RELEASE_VERSION}"
 
 if [ "${PUSH}" == "true" ]; then
@@ -87,7 +91,7 @@ sed -i -E 's|v'${RELEASE_VERSION}'|v'${NEXT_VERSION}'-alpha|g' internal/version/
 
 # Commit changes
 printf "\033[36m==> %s\033[0m\n" "Bump version to v${NEXT_VERSION}-alpha"
-git add internal/pkg/version/version.go
+git add internal/version/version.go
 git commit -m "Bump version to v${NEXT_VERSION}-alpha"
 
 if [ "${PUSH}" == "true" ]; then
