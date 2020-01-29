@@ -2,7 +2,7 @@
 
 `ratelimiter` is an app to do dirstibuted rate limiting in front of backend services. It consists of:
 
-- A command line interface ([`ratelimiter`](./main.go)) built on these packages.
+- A command line interface ([`ratelimiter`](./cmd/main.go)) built on these packages.
 - Docker [image](./images) to run ratelimiter in a containerized workload.
 - Go package implementing [rate limiting](./limiter.go), which can directly be used in other projects.
 
