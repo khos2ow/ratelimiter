@@ -46,7 +46,7 @@ var rootCmd = &cobra.Command{
 		limiter := ratelimiter.NewLimiter(rule, store)
 		return server.Start(backends, limiter)
 	},
-	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if rl, exists := os.LookupEnv("RATE_LIMIT"); exists && rl != "" {
 			if i, err := strconv.Atoi(rl); err == nil {
 				flags.Limit = i
