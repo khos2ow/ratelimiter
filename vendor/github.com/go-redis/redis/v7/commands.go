@@ -969,6 +969,8 @@ func (c cmdable) HLen(key string) *IntCmd {
 	return cmd
 }
 
+// HMGet returns the values for the specified fields in the hash stored at key.
+// It returns an interface{} to distinguish between empty string and nil value.
 func (c cmdable) HMGet(key string, fields ...string) *SliceCmd {
 	args := make([]interface{}, 2+len(fields))
 	args[0] = "hmget"
@@ -982,9 +984,9 @@ func (c cmdable) HMGet(key string, fields ...string) *SliceCmd {
 }
 
 // HMSet is like HSet, but accepts multiple values:
-//   - HMSet("key1", "value1", "key2", "value2")
-//   - HMSet([]string{"key1", "value1", "key2", "value2"})
-//   - HMSet(map[string]interface{}{"key1": "value1", "key2": "value2"})
+//   - HMSet("myhash", "key1", "value1", "key2", "value2")
+//   - HMSet("myhash", []string{"key1", "value1", "key2", "value2"})
+//   - HMSet("myhash", map[string]interface{}{"key1": "value1", "key2": "value2"})
 //
 // Note that it uses HSET Redis command underneath because HMSET is deprecated.
 func (c cmdable) HMSet(key string, values ...interface{}) *IntCmd {
@@ -1403,7 +1405,7 @@ func (c cmdable) XRevRangeN(stream, start, stop string, count int64) *XMessageSl
 }
 
 type XReadArgs struct {
-	Streams []string
+	Streams []string // list of streams and ids, e.g. stream1 stream2 id1 id2
 	Count   int64
 	Block   time.Duration
 }
@@ -1419,6 +1421,7 @@ func (c cmdable) XRead(a *XReadArgs) *XStreamSliceCmd {
 		args = append(args, "block")
 		args = append(args, int64(a.Block/time.Millisecond))
 	}
+
 	args = append(args, "streams")
 	for _, s := range a.Streams {
 		args = append(args, s)
