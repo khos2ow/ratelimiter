@@ -696,7 +696,7 @@ func (c *ClusterClient) WithContext(ctx context.Context) *ClusterClient {
 	}
 	clone := *c
 	clone.cmdable = clone.Process
-	clone.hooks.Lock()
+	clone.hooks.lock()
 	clone.ctx = ctx
 	return &clone
 }
@@ -743,7 +743,7 @@ func (c *ClusterClient) ProcessContext(ctx context.Context, cmd Cmder) error {
 func (c *ClusterClient) process(ctx context.Context, cmd Cmder) error {
 	err := c._process(ctx, cmd)
 	if err != nil {
-		cmd.setErr(err)
+		cmd.SetErr(err)
 		return err
 	}
 	return nil
