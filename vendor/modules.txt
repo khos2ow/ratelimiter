@@ -8,7 +8,7 @@ github.com/go-redis/redis/v7/internal/hashtag
 github.com/go-redis/redis/v7/internal/pool
 github.com/go-redis/redis/v7/internal/proto
 github.com/go-redis/redis/v7/internal/util
-# github.com/gorilla/mux v1.7.3
+# github.com/gorilla/mux v1.7.4
 github.com/gorilla/mux
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
