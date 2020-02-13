@@ -32,13 +32,13 @@ type hooks struct {
 	hooks []Hook
 }
 
-func (hs *hooks) Lock() {
+func (hs *hooks) lock() {
 	hs.hooks = hs.hooks[:len(hs.hooks):len(hs.hooks)]
 }
 
-func (hs hooks) Clone() hooks {
+func (hs hooks) clone() hooks {
 	clone := hs
-	clone.Lock()
+	clone.lock()
 	return clone
 }
 
@@ -51,14 +51,14 @@ func (hs hooks) process(
 ) error {
 	ctx, err := hs.beforeProcess(ctx, cmd)
 	if err != nil {
-		cmd.setErr(err)
+		cmd.SetErr(err)
 		return err
 	}
 
 	cmdErr := fn(ctx, cmd)
 
 	if err := hs.afterProcess(ctx, cmd); err != nil {
-		cmd.setErr(err)
+		cmd.SetErr(err)
 		return err
 	}
 
@@ -287,7 +287,7 @@ func (c *baseClient) withConn(
 func (c *baseClient) process(ctx context.Context, cmd Cmder) error {
 	err := c._process(ctx, cmd)
 	if err != nil {
-		cmd.setErr(err)
+		cmd.SetErr(err)
 		return err
 	}
 	return nil
@@ -526,7 +526,7 @@ func NewClient(opt *Options) *Client {
 func (c *Client) clone() *Client {
 	clone := *c
 	clone.cmdable = clone.Process
-	clone.hooks.Lock()
+	clone.hooks.lock()
 	return &clone
 }
 
