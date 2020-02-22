@@ -52,7 +52,7 @@ func (r *Rule) within(start time.Time) bool {
 	case time.Hour:
 		inunit = diff.Hours()
 	}
-	return inunit < 1
+	return inunit < float64(r.Interval)
 }
 
 // NewRule creates new Rule with provided limit, interval and unit
