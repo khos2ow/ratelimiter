@@ -49,6 +49,11 @@ jobs:
     - name: Run tests
       run: make test
 
+    - name: Check code coverage
+      run: |
+        make test-coverage
+        bash <(curl -s https://codecov.io/bash)
+
   build:
     name: Build
     runs-on: ubuntu-latest
