@@ -1,5 +1,7 @@
 # ratelimiter
 
+[![codecov](https://codecov.io/gh/khos2ow/ratelimiter/branch/master/graph/badge.svg)](https://codecov.io/gh/khos2ow/ratelimiter)
+
 `ratelimiter` is an app to do dirstibuted rate limiting in front of backend services. It consists of:
 
 - A command line interface ([`ratelimiter`](./cmd/main.go)) built on these packages.
