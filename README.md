@@ -1,6 +1,6 @@
 # ratelimiter
 
-[![Build Status](https://github.com/khos2ow/ratelimiter/workflows/build/badge.svg)](https://github.com/khos2ow/ratelimiter/actions) [![GoDoc](https://godoc.org/github.com/khos2ow/ratelimiter?status.svg)](https://godoc.org/github.com/khos2ow/ratelimiter) [![Go Report Card](https://goreportcard.com/badge/github.com/khos2ow/ratelimiter)](https://goreportcard.com/report/github.com/khos2ow/ratelimiter) [![codecov](https://codecov.io/gh/khos2ow/ratelimiter/branch/master/graph/badge.svg)](https://codecov.io/gh/khos2ow/ratelimiter) [![License](https://img.shields.io/github/license/khos2ow/ratelimiter)](https://github.com/khos2ow/ratelimiter/blob/master/LICENSE)
+[![Build Status](https://github.com/khos2ow/ratelimiter/workflows/build/badge.svg)](https://github.com/khos2ow/ratelimiter/actions) [![GoDoc](https://godoc.org/github.com/khos2ow/ratelimiter?status.svg)](https://godoc.org/github.com/khos2ow/ratelimiter) [![Go Report Card](https://goreportcard.com/badge/github.com/khos2ow/ratelimiter)](https://goreportcard.com/report/github.com/khos2ow/ratelimiter) [![codecov](https://codecov.io/gh/khos2ow/ratelimiter/branch/master/graph/badge.svg)](https://codecov.io/gh/khos2ow/ratelimiter) [![License](https://img.shields.io/github/license/khos2ow/ratelimiter)](https://github.com/khos2ow/ratelimiter/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/khos2ow/ratelimiter)](https://github.com/khos2ow/ratelimiter/releases)
 
 `ratelimiter` is an app to do dirstibuted rate limiting in front of backend services. It consists of:
 
