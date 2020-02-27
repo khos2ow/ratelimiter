@@ -98,6 +98,11 @@ test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
 
+.PHONY: test-coverage
+test-coverage: ## Run tests
+	@ $(MAKE) --no-print-directory log-$@
+	$(GOCMD) test -race -coverprofile=coverage.txt -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
+
 ###################
 ## Build targets ##
 ###################
