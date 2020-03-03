@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/khos2ow/ratelimiter"
 	"github.com/khos2ow/ratelimiter/internal/data"
+	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
 )
 
 func main() {

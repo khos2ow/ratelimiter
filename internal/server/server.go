@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/khos2ow/ratelimiter"
 	"github.com/khos2ow/ratelimiter/internal/version"
+	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
 	"github.com/sirupsen/logrus"
 )
 

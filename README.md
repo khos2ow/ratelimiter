@@ -22,7 +22,7 @@
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="off" go get github.com/khos2ow/ratelimiter@v0.1.0
+GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.1.0
 ```
 
 **NOTE:** please use the latest go to do this, ideally go 1.13.5 or greater. We use go 1.14.
@@ -195,7 +195,7 @@ GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.1.0
 and then
 
 ```go
-import "github.com/khos2ow/ratelimiter"
+import "github.com/khos2ow/ratelimiter/pkg/ratelimiter"
 ```
 
 [example/main.go](./example/main.go):
@@ -207,8 +207,8 @@ import (
     "fmt"
     "time"
 
-    "github.com/khos2ow/ratelimiter"
     "github.com/khos2ow/ratelimiter/internal/data"
+    "github.com/khos2ow/ratelimiter/pkg/ratelimiter"
 )
 
 func main() {

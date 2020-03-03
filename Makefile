@@ -99,7 +99,7 @@ test: ## Run tests
 	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
 
 .PHONY: test-coverage
-test-coverage: ## Run tests
+test-coverage: ## Run tests with coverage
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOCMD) test -race -coverprofile=coverage.txt -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
 
@@ -109,7 +109,7 @@ test-coverage: ## Run tests
 .PHONY: build
 build: clean ## Build binary for current OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME) $(PACKAGE)/cmd
+	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME) $(PACKAGE)
 
 .PHONY: build-all
 build-all: GOOS   = linux darwin windows freebsd
