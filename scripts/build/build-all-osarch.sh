@@ -29,7 +29,7 @@ CGO_ENABLED=0 gox \
     -os="${GOOS}" \
     -arch="${GOARCH}" \
     -osarch="!darwin/arm" \
-    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/ratelimiter" ${PWD}/../../cmd
+    -output="${BUILD_DIR}/{{.OS}}-{{.Arch}}/ratelimiter" ${PWD}/../../
 
 printf "\033[36m==> Finalize binary\033[0m\n"
 
