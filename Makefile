@@ -39,7 +39,7 @@ DOCKER_TAG   := $(DEFAULT_TAG)
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
-GOLANGCI_VERSION  := v1.23.1
+GOLANGCI_VERSION  := v1.23.7
 
 .PHONY: all
 all: clean tools verify checkfmt lint test build
