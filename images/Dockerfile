@@ -11,7 +11,7 @@ RUN make build
 
 ################
 
-FROM alpine:3.11.3
+FROM alpine:3.11.5
 
 RUN apk --no-cache add ca-certificates
 
