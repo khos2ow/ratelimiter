@@ -221,7 +221,12 @@ func main() {
     fmt.Printf("limiting resource '%s' to %s\n\n", resource, rule.String())
 
     for i := 0; i < 25; i++ {
-        fmt.Printf("hit #%-10dallowed: %-10velapsed: %f seconds\n", i+1, limiter.IsAllowed(resource), time.Now().Sub(start).Seconds())
+        allowed, err := limiter.IsAllowed(resource)
+        if err != nil {
+            fmt.Printf("hit #%-10derror: %-10velapsed: %f seconds\n", i+1, err.Error(), time.Now().Sub(start).Seconds())
+        } else {
+            fmt.Printf("hit #%-10dallowed: %-10velapsed: %f seconds\n", i+1, allowed, time.Now().Sub(start).Seconds())
+        }
         time.Sleep(80 * time.Millisecond)
     }
 

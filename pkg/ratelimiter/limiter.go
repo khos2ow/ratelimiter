@@ -67,20 +67,22 @@ func NewLimiter(rule *Rule, store data.Store) *Limiter {
 
 // IsAllowed checks the allowance of the requests in the current
 // timeframe with previous hits in the same timeframe in mind.
-func (l *Limiter) IsAllowed(resource string) bool {
+func (l *Limiter) IsAllowed(resource string) (bool, error) {
 	bucket := time.Duration(l.rule.interval) * l.rule.unit
 	key := time.Now().Truncate(bucket).String()
 	if !l.store.Has(key) {
-		l.store.Create(key, resource)
+		if err := l.store.Create(key, resource); err != nil {
+			return false, err
+		}
 	}
 	hits, err := l.store.Get(key, resource)
 	if err != nil {
-		return false
+		return false, err
 	}
 	if hits <= l.rule.limit {
 		if hits, err = l.store.Add(key, resource, time.Now()); err != nil {
-			return false
+			return false, err
 		}
 	}
-	return hits <= l.rule.limit
+	return hits <= l.rule.limit, nil
 }
