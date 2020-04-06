@@ -216,9 +216,6 @@ func main() {
     store := data.NewInMemory(&data.Options{})
     rule := ratelimiter.NewRule(10, 1, time.Second)
     limiter := ratelimiter.NewLimiter(rule, store)
-    if err := limiter.Register(resource); err != nil {
-        panic(err)
-    }
 
     start := time.Now()
     fmt.Printf("limiting resource '%s' to %s\n\n", resource, rule.String())

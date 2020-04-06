@@ -37,6 +37,7 @@ func Start(backends []string, limiter *ratelimiter.Limiter) error {
 		ReadTimeout:  5000 * time.Millisecond,
 		WriteTimeout: 5000 * time.Millisecond,
 	}
+	logrus.Info("Server is running http://localhost:8000 ...")
 	if err := server.ListenAndServe(); err != nil {
 		return err
 	}

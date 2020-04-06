@@ -10,10 +10,11 @@ NAMESPACE   := $(ORG)/$(NAME)
 PACKAGE     := $(REPOSITORY)/$(NAMESPACE)
 
 # Build variables
-BUILD_DIR   := bin
-COMMIT_HASH ?= $(shell git rev-parse --short HEAD 2>/dev/null)
-GIT_VERSION ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.1-$(COMMIT_HASH)")
-BUILD_DATE  ?= $(shell date +%FT%T%z)
+BUILD_DIR    := bin
+COMMIT_HASH  ?= $(shell git rev-parse --short HEAD 2>/dev/null)
+GIT_VERSION  ?= $(shell git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.1-$(COMMIT_HASH)")
+BUILD_DATE   ?= $(shell date +%FT%T%z)
+COVERAGE_OUT := coverage.out
 
 # Go variables
 GOOS        ?= $(shell go env GOOS)
@@ -58,7 +59,7 @@ version: ## Show version of plugin
 .PHONY: clean
 clean: ## Clean builds
 	@ $(MAKE) --no-print-directory log-$@
-	rm -rf ./$(BUILD_DIR) $(NAME)
+	rm -rf ./$(BUILD_DIR) $(NAME) $(COVERAGE_OUT)
 
 .PHONY: vendor
 vendor: ## Install 'vendor' dependencies
@@ -96,12 +97,7 @@ checkfmt: ## Check formatting of all go files
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test $(MODVENDOR) -v $(GOPKGS)
-
-.PHONY: test-coverage
-test-coverage: ## Run tests with coverage
-	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test -race -coverprofile=coverage.txt -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
+	$(GOCMD) test -race -coverprofile=$(COVERAGE_OUT) -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
 
 ###################
 ## Build targets ##

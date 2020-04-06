@@ -18,3 +18,4 @@ tmp/*
 testshare/*
 bin
 coverage.txt
+coverage.out
