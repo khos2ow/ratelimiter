@@ -16,14 +16,17 @@ type resourcesHandler struct {
 func (rh *resourcesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	resource := vars["resource"]
-	logrus.Info("Registering new rate-limited resource: ", resource)
-	if err := rh.limiter.Register(resource); err != nil {
-		logrus.Error(err)
-		write(w, http.StatusInternalServerError, "Interal Error!")
+	logrus.Info("checking rate-limit for resource: ", resource)
+	ok, err := rh.limiter.IsAllowed(resource)
+	if err != nil {
+		write(w, http.StatusInternalServerError, err.Error())
+		return
 	}
-	if rh.limiter.IsAllowed(resource) {
+	if ok {
+		logrus.Info("serving resource: ", resource)
 		write(w, http.StatusOK, fmt.Sprintf("OK: '%s' content.", resource))
 	} else {
+		logrus.Error("too many request for resource: ", resource)
 		write(w, http.StatusTooManyRequests, fmt.Sprintf("Error: '%s' rate limited!", resource))
 	}
 }

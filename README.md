@@ -216,15 +216,17 @@ func main() {
     store := data.NewInMemory(&data.Options{})
     rule := ratelimiter.NewRule(10, 1, time.Second)
     limiter := ratelimiter.NewLimiter(rule, store)
-    if err := limiter.Register(resource); err != nil {
-        panic(err)
-    }
 
     start := time.Now()
     fmt.Printf("limiting resource '%s' to %s\n\n", resource, rule.String())
 
     for i := 0; i < 25; i++ {
-        fmt.Printf("hit #%-10dallowed: %-10velapsed: %f seconds\n", i+1, limiter.IsAllowed(resource), time.Now().Sub(start).Seconds())
+        allowed, err := limiter.IsAllowed(resource)
+        if err != nil {
+            fmt.Printf("hit #%-10derror: %-10velapsed: %f seconds\n", i+1, err.Error(), time.Now().Sub(start).Seconds())
+        } else {
+            fmt.Printf("hit #%-10dallowed: %-10velapsed: %f seconds\n", i+1, allowed, time.Now().Sub(start).Seconds())
+        }
         time.Sleep(80 * time.Millisecond)
     }
 
