@@ -19,7 +19,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: ratelimiter
-        image: khos2ow/ratelimiter:0.0.1
+        image: khos2ow/ratelimiter:0.1.1
         imagePullPolicy: Always
         ports:
         - name: http

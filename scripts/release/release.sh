@@ -61,9 +61,11 @@ if [ -z "$CLOSEST_VERSION" ]; then
     CLOSEST_VERSION="v0.0.1"
 fi
 
+CLOSEST_VERSION=$(echo "${CLOSEST_VERSION}" | sed 's/^v//')
+
 # Bump the released version in README and version.go
-sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' README.md
-sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' deploy/deployment.yaml
+sed -i -E 's|'${CLOSEST_VERSION}'|'${RELEASE_VERSION}'|g' README.md
+sed -i -E 's|'${CLOSEST_VERSION}'|'${RELEASE_VERSION}'|g' deploy/deployment.yaml
 sed -i -E 's|v'${RELEASE_VERSION}'-alpha|v'${RELEASE_VERSION}'|g' internal/version/version.go
 
 # Commit changes
