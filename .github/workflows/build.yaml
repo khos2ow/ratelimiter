@@ -59,11 +59,11 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Build Docker image
-      if: "{{ github.ref != 'ref/head/master' }}"
+      if: "!contains(github.ref, 'ref/head/master')"
       run: DOCKER_TAG=${{ github.sha }} make image
 
     - name: Build and push Docker image
-      if: "{{ github.ref == 'ref/head/master' }}"
+      if: "contains(github.ref, 'ref/head/master')"
       run: |
         echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin
         DOCKER_TAG=edge make image push
