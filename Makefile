@@ -36,7 +36,7 @@ GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
 # Docker variables
 DEFAULT_TAG  ?= $(shell echo "$(GIT_VERSION)" | tr -d 'v')
 DOCKER_IMAGE := $(NAMESPACE)
-DOCKER_TAG   := $(DEFAULT_TAG)
+DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
