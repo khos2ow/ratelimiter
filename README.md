@@ -4,9 +4,9 @@
 
 `ratelimiter` is an app to do dirstibuted rate limiting in front of backend services. It consists of:
 
-- A command line interface ([`ratelimiter`](./cmd/main.go)) built on these packages.
+- A command line interface ([`ratelimiter`](./main.go)) built on these packages.
 - Docker [image](Dockerfile) to run ratelimiter in a containerized workload.
-- Go package implementing [rate limiting](./limiter.go), which can directly be used in other projects.
+- Go [package](./pkg/ratelimiter/limiter.go), which can directly be used in other projects.
 
 ## Table of Contents
 
@@ -91,15 +91,22 @@ Note: You have to only use comma-separated value in `BACKEND_SERVER` environment
 Docker images are created on each release with the following tag format:
 
 ```text
-khos2ow/ratelimiter:<git-tag-without-leading-v>
-e.g.
-khos2ow/ratelimiter:0.1.1
+khos2ow/ratelimiter:latest
+khos2ow/ratelimiter:0.1.1 # <git-tag-without-leading-v>
+```
+
+also `HEAD` of master which might be unstable:
+
+```text
+khos2ow/ratelimiter:edge
 ```
 
 and you can simply use the image:
 
 ```bash
 docker run -d \
+    --name ratelimiter \
+    --restart always \
     -e RATE_LIMIT=<number> \
     -e RATE_INTERVAL=<number> \
     -e RATE_TIMEUNIT=<time-unit> \
@@ -189,7 +196,7 @@ kubectl apply -f deploy -n rate-limiter
 ratelimiter exposes most of its functionality through Go Package which can be imported in other projects. To do that you can use package manager of your choice:
 
 ```bash
-GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.1.1
+go get github.com/khos2ow/ratelimiter
 ```
 
 and then
