@@ -5,7 +5,7 @@
 `ratelimiter` is an app to do dirstibuted rate limiting in front of backend services. It consists of:
 
 - A command line interface ([`ratelimiter`](./cmd/main.go)) built on these packages.
-- Docker [image](./images) to run ratelimiter in a containerized workload.
+- Docker [image](Dockerfile) to run ratelimiter in a containerized workload.
 - Go package implementing [rate limiting](./limiter.go), which can directly be used in other projects.
 
 ## Table of Contents
@@ -93,7 +93,7 @@ Docker images are created on each release with the following tag format:
 ```text
 khos2ow/ratelimiter:<git-tag-without-leading-v>
 e.g.
-khos2ow/ratelimiter:0.0.1
+khos2ow/ratelimiter:0.1.1
 ```
 
 and you can simply use the image:
@@ -109,7 +109,7 @@ docker run -d \
     -e REDIS_PASSWORD=<password-for-redis> \
     -e BACKEND_SERVER=<comma-separated-list-of-backend-service>
     -p 8000:8000 \
-    khos2ow/ratelimiter:0.0.1
+    khos2ow/ratelimiter:0.1.1
 ```
 
 ### Kubernetes

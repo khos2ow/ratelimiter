@@ -117,7 +117,7 @@ build-all: clean ## Build binary for all OS/ARCH
 .PHONY: image
 image: ## Build Docker image
 	@ $(MAKE) --no-print-directory log-$@
-	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file images/Dockerfile .
+	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file Dockerfile .
 
 .PHONY: up
 up: PORT          := 8000
