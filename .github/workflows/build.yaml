@@ -58,11 +58,11 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
 
-    - name: Build Docker image
+    - name: Build 'dev' Docker image
       if: "!contains(github.ref, 'ref/head/master')"
       run: DOCKER_TAG=${{ github.sha }} make image
 
-    - name: Build and push Docker image
+    - name: Build and push 'edge' Docker image
       if: "contains(github.ref, 'ref/head/master')"
       run: |
         echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin
