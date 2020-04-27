@@ -115,7 +115,7 @@ docker run -d \
     -e REDIS_PORT=<port-of-redis> \
     -e REDIS_PASSWORD=<password-for-redis> \
     -e BACKEND_SERVER=<comma-separated-list-of-backend-service>
-    -p 8000:8000 \
+    -p 8080:8080 \
     khos2ow/ratelimiter:0.1.1
 ```
 

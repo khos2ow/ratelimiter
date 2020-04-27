@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    command:
+      - "/app/ratelimiter"
+      - "--rate-limit=5"         # Maximum number of hits to allow in every unit of time
+      - "--rate-interval=1"      # Interval for limiting hits every unit of time in
+      - "--rate-timeunit=m"      # Unit of time for limiting hits in each interval [s, m, h]
+
+      - "--use-redis=false"      # Use Redis instead of in-memory cache [true, false]
+      - "--redis-url=redis"      # Redis URL
+      - "--redis-port=6379"      # Redis port
+      # - "--redis-password="    # Redis password (if defined below)
+
+      # - "--backend-server"     # List of backend servers to proxy to
+      # - "1.2.3.4"
+      # - "--backend-server"     # List of backend servers to proxy to
+      # - "5.6.7.8"
+  redis:
+    ports:
+      - "6379:6379"
+    image: "redis:5.0"

@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rate-limiter
-  namespace: rate-limiter
   labels:
     app: rate-limiter
 spec:
@@ -21,19 +20,31 @@ spec:
       - name: ratelimiter
         image: khos2ow/ratelimiter:0.1.1
         imagePullPolicy: Always
+        command:
+          - "/app/ratelimiter"
+        args:
+           - "--rate-limit=$(RATE_LIMIT)"
+           - "--rate-limit=$(RATE_LIMIT)"
+           - "--rate-interval=$(RATE_INTERVAL)"
+           - "--rate-timeunit=$(RATE_TIMEUNIT)"
+           - "--use-redis=$(USE_REDIS)"
+           - "--redis-url=$(REDIS_URL)"
+           - "--redis-port=$(REDIS_PORT)"
+           - "--redis-password=$(REDIS_PASSWORD)"
+           - "--backend-server=$(BACKEND_SERVER)"
         ports:
         - name: http
-          containerPort: 8000
+          containerPort: 8080
         # - name: https
         #   containerPort: 8443
         #   protocol: TCP
         resources:
-        #   limits:
-        #     cpu: 1
-        #     memory: 400Mi
-        #   requests:
-        #     cpu: 200m
-        #     memory: 100Mi
+          limits:
+            cpu: "1"
+            memory: 400Mi
+          requests:
+            cpu: 200m
+            memory: 100Mi
         env:
         - name: RATE_LIMIT
           valueFrom:
@@ -82,7 +93,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 8000
+            port: 8080
       # volumes:
       # - name: volume-ssl
       #   secret:

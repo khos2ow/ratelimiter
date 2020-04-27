@@ -32,12 +32,12 @@ func Start(backends []string, limiter *ratelimiter.Limiter) error {
 	router.Handle("/{resource}", handler)
 
 	server := &http.Server{
-		Addr:         ":8000",
+		Addr:         ":8080",
 		Handler:      router,
 		ReadTimeout:  5000 * time.Millisecond,
 		WriteTimeout: 5000 * time.Millisecond,
 	}
-	logrus.Info("Server is running http://localhost:8000 ...")
+	logrus.Info("Server is running http://localhost:8080 ...")
 	if err := server.ListenAndServe(); err != nil {
 		return err
 	}

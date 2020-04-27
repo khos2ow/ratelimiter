@@ -3,15 +3,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rate-limiter-config
-  namespace: rate-limiter
   labels:
     app: rate-limiter
 data:
-  RATE_LIMIT: "<RATE.LIMIT>"
-  RATE_INTERVAL: "<RATE.INTERVAL>"
-  RATE_TIMEUNIT: "<RATE.TIMEUNIT>"
-  USE_REDIS: "true | false"
-  REDIS_URL: "<REDIS.URL>"
-  REDIS_PORT: "<REDIS.PORT>"
-  BACKEND_SERVER: ""
-  # BACKEND_SERVER: "<COMMA.SEPARATED.BACKEND.SERVERS>"
+  RATE_LIMIT: "100"      # Maximum number of hits to allow in every unit of time
+  RATE_INTERVAL: "1"     # Interval for limiting hits every unit of time in
+  RATE_TIMEUNIT: "m"     # Unit of time for limiting hits in each interval [s, m, h]
+  USE_REDIS: "false"     # Use Redis instead of in-memory cache [true, false]
+  REDIS_URL: "redis"     # Redis URL
+  REDIS_PORT: "6379"     # Redis port
+  BACKEND_SERVER: ""     # Comma separated list of backend servers to proxy to e.g. '1.2.3.4,5.6.7.8'

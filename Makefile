@@ -114,25 +114,10 @@ build-all: clean ## Build binary for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(GIT_VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
 
-.PHONY: image
-image: ## Build Docker image
+.PHONY: docker
+docker: ## Build Docker image
 	@ $(MAKE) --no-print-directory log-$@
 	docker build --pull --tag $(DOCKER_IMAGE):$(DOCKER_TAG) --file Dockerfile .
-
-.PHONY: up
-up: PORT          := 8000
-up: RATE_LIMIT    := 100
-up: RATE_INTERVAL := 1
-up: RATE_TIMEUNIT := m
-up: image ## Build and run Docker image
-	@ $(MAKE) --no-print-directory log-$@
-	docker run \
-		-e RATE_LIMIT=$(RATE_LIMIT) \
-		-e RATE_INTERVAL=$(RATE_INTERVAL) \
-		-e RATE_TIMEUNIT=$(RATE_TIMEUNIT) \
-		--publish $(PORT):8000 \
-		--network host \
-		$(DOCKER_IMAGE):$(DOCKER_TAG)
 
 .PHONY: push
 push: ## Push Docker image
@@ -164,7 +149,6 @@ endif
 tools: ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
 	@ $(MAKE) --no-print-directory goimports golangci gox
-
 
 #####################
 ## Release targets ##
