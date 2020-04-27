@@ -60,13 +60,13 @@ jobs:
 
     - name: Build 'dev' Docker image
       if: "!contains(github.ref, 'refs/heads/master')"
-      run: DOCKER_TAG=${{ github.sha }} make image
+      run: DOCKER_TAG=${{ github.sha }} make docker
 
     - name: Build and push 'edge' Docker image
       if: "contains(github.ref, 'refs/heads/master')"
       run: |
         echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin
-        DOCKER_TAG=edge make image push
+        DOCKER_TAG=edge make docker push
       env:
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}

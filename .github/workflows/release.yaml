@@ -55,8 +55,8 @@ jobs:
     - name: Build and push Docker image
       run: |
         echo ${REGISTRY_PASSWORD} | docker login -u ${REGISTRY_USERNAME} --password-stdin
-        DOCKER_TAG=${{ steps.vars.outputs.tag }} make image push
-        DOCKER_TAG=latest make image push
+        DOCKER_TAG=${{ steps.vars.outputs.tag }} make docker push
+        DOCKER_TAG=latest make docker push
       env:
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}

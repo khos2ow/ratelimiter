@@ -3,7 +3,6 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: rate-limiter
-  namespace: rate-limiter
   labels:
     app: rate-limiter
   annotations:
