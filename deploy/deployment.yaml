@@ -21,7 +21,7 @@ spec:
         image: khos2ow/ratelimiter:0.1.1
         imagePullPolicy: Always
         command:
-          - "/app/ratelimiter"
+          - "ratelimiter"
         args:
            - "--rate-limit=$(RATE_LIMIT)"
            - "--rate-limit=$(RATE_LIMIT)"

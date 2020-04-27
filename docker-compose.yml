@@ -5,7 +5,6 @@ services:
     ports:
       - "8080:8080"
     command:
-      - "/app/ratelimiter"
       - "--rate-limit=5"         # Maximum number of hits to allow in every unit of time
       - "--rate-interval=1"      # Interval for limiting hits every unit of time in
       - "--rate-timeunit=m"      # Unit of time for limiting hits in each interval [s, m, h]
@@ -19,7 +18,7 @@ services:
       # - "1.2.3.4"
       # - "--backend-server"     # List of backend servers to proxy to
       # - "5.6.7.8"
-  redis:
-    ports:
-      - "6379:6379"
-    image: "redis:5.0"
+  # redis:
+  #   ports:
+  #     - "6379:6379"
+  #   image: "redis:5.0"

@@ -1,4 +1,4 @@
-docker_build('ratelimiter', '.', dockerfile='Dockerfile')
+docker_build('khos2ow/ratelimiter', '.', dockerfile='Dockerfile')
 
 k8s_yaml([
     'deploy/rbac.yaml',

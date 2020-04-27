@@ -107,16 +107,16 @@ and you can simply use the image:
 docker run -d \
     --name ratelimiter \
     --restart always \
-    -e RATE_LIMIT=<number> \
-    -e RATE_INTERVAL=<number> \
-    -e RATE_TIMEUNIT=<time-unit> \
-    -e USE_REDIS=<use-redis-or-in-memory-cache> \
-    -e REDIS_URL=<ip-of-redis> \
-    -e REDIS_PORT=<port-of-redis> \
-    -e REDIS_PASSWORD=<password-for-redis> \
-    -e BACKEND_SERVER=<comma-separated-list-of-backend-service>
     -p 8080:8080 \
-    khos2ow/ratelimiter:0.1.1
+    khos2ow/ratelimiter:0.1.1 \
+    --rate-limit=<number> \
+    --rate-interval=<number> \
+    --rate-timeunit=<time-unit> \
+    --use-redis=<use-redis-or-in-memory-cache> \
+    --redis-url=<ip-of-redis> \
+    --redis-port=<port-of-redis> \
+    --redis-password=<password-for-redis> \
+    --backend-server=<comma-separated-list-of-backend-service>
 ```
 
 ### Kubernetes
