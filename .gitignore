@@ -19,3 +19,4 @@ testshare/*
 bin
 coverage.txt
 coverage.out
+vendor/
