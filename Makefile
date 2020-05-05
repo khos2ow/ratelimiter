@@ -19,9 +19,7 @@ COVERAGE_OUT := coverage.out
 # Go variables
 GOOS        ?= $(shell go env GOOS)
 GOARCH      ?= $(shell go env GOARCH)
-GOCMD       := GO111MODULE=on go
-MODVENDOR   := -mod=vendor
-GOPKGS      ?= $(shell $(GOCMD) list $(MODVENDOR) ./... | grep -v /vendor)
+GOPKGS      ?= $(shell go list $(MODVENDOR) ./... | grep -v /vendor)
 GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 GOLDFLAGS   :="
@@ -30,8 +28,8 @@ GOLDFLAGS   += -X $(PACKAGE)/internal/version.commitHash=$(COMMIT_HASH)
 GOLDFLAGS   += -X $(PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
 GOLDFLAGS   +="
 
-GOBUILD     ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
-GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
+GOBUILD     ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags $(GOLDFLAGS)
+GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run $(MODVENDOR)
 
 # Docker variables
 DEFAULT_TAG  ?= $(shell echo "$(GIT_VERSION)" | tr -d 'v')
@@ -61,25 +59,20 @@ clean: ## Clean builds
 	@ $(MAKE) --no-print-directory log-$@
 	rm -rf ./$(BUILD_DIR) $(NAME) $(COVERAGE_OUT)
 
-.PHONY: vendor
-vendor: ## Install 'vendor' dependencies
-	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) mod vendor
-
 .PHONY: verify
 verify: ## Verify 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) mod verify
+	go mod verify
 
 .PHONY: tidy
 tidy: ## Tidy up 'vendor' dependencies
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) mod tidy
+	go mod tidy
 
 .PHONY: lint
 lint: ## Run linter
 	@ $(MAKE) --no-print-directory log-$@
-	GO111MODULE=on golangci-lint run ./...
+	golangci-lint run ./...
 
 .PHONY: fmt
 fmt: ## Format all go files
@@ -97,7 +90,11 @@ checkfmt: ## Check formatting of all go files
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	$(GOCMD) test -race -coverprofile=$(COVERAGE_OUT) -covermode=atomic $(MODVENDOR) -v $(GOPKGS)
+	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v $(GOPKGS)
+
+# removed and gitignoreed 'vendor/', not needed anymore #
+.PHONY: vendor
+vendor:
 
 ###################
 ## Build targets ##
