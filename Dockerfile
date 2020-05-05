@@ -4,6 +4,10 @@ RUN apk add --update --no-cache ca-certificates bash make gcc musl-dev git opens
 
 WORKDIR /go/src/ratelimiter
 
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
 COPY . .
 RUN make build
 
