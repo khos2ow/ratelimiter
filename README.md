@@ -16,6 +16,8 @@
   - [Docker Container](#docker-container)
   - [Kubernetes](#kubernetes)
 - [Go Package](#go-package)
+- [Developement](#developement)
+- [License](#license)
 
 ## Installation
 
@@ -25,7 +27,7 @@ The latest version can be installed using `go get`:
 GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.1.1
 ```
 
-**NOTE:** please use the latest go to do this, ideally go 1.13.5 or greater. We use go 1.14.
+**NOTE:** please use the latest go to do this, ideally go 1.14 or greater.
 
 This will put `ratelimiter` in `$(go env GOPATH)/bin`. If you encounter the error `ratelimiter: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `ratelimiter` in:
 
@@ -112,7 +114,7 @@ docker run -d \
     --rate-limit=<number> \
     --rate-interval=<number> \
     --rate-timeunit=<time-unit> \
-    --use-redis=<use-redis-or-in-memory-cache> \
+    --use-redis=<boolean> \
     --redis-url=<ip-of-redis> \
     --redis-port=<port-of-redis> \
     --redis-password=<password-for-redis> \
@@ -133,18 +135,16 @@ Prerequisites
     kind: ConfigMap
     metadata:
       name: rate-limiter-config
-      namespace: rate-limiter
       labels:
         app: rate-limiter
     data:
-      RATE_LIMIT: "<RATE.LIMIT>"
-      RATE_INTERVAL: "<RATE.INTERVAL>"
-      RATE_TIMEUNIT: "<RATE.TIMEUNIT>"
-      USE_REDIS: "true | false"
-      REDIS_URL: "<REDIS.URL>"
-      REDIS_PORT: "<REDIS.PORT>"
-      BACKEND_SERVER: ""
-      # BACKEND_SERVER: "<COMMA.SEPARATED.BACKEND.SERVERS>"
+      RATE_LIMIT: "100"      # Maximum number of hits to allow in every unit of time
+      RATE_INTERVAL: "1"     # Interval for limiting hits every unit of time in
+      RATE_TIMEUNIT: "m"     # Unit of time for limiting hits in each interval [s, m, h]
+      USE_REDIS: "false"     # Use Redis instead of in-memory cache [true, false]
+      REDIS_URL: "redis"     # Redis URL
+      REDIS_PORT: "6379"     # Redis port
+      BACKEND_SERVER: ""     # Comma separated list of backend servers to proxy to e.g. '1.2.3.4,5.6.7.8'
     ```
 
 4. Update Redis password in [deploy/secret.yaml](./deploy/secret.yaml):
@@ -155,10 +155,9 @@ Prerequisites
     kind: Secret
     metadata:
       name: rate-limiter-secret
-      namespace: rate-limiter
     type: Opaque
     data:
-      REDIS_PASSWORD: "<REDIS.PASSWORD>"
+      REDIS_PASSWORD: ""  # base64 hash of Redis password
    ```
 
 5. Enable or update [deploy/ingress.yaml](./deploy/ingress.yaml):
@@ -169,7 +168,6 @@ Prerequisites
     kind: Ingress
     metadata:
       name: rate-limiter
-      namespace: rate-limiter
       labels:
         app: rate-limiter
       annotations:
@@ -188,12 +186,12 @@ Prerequisites
 then you can deploy using `kubectl`:
 
 ```bash
-kubectl apply -f deploy -n rate-limiter
+kubectl apply -f deploy
 ```
 
 ## Go Package
 
-ratelimiter exposes most of its functionality through Go Package which can be imported in other projects. To do that you can use package manager of your choice:
+ratelimiter exposes most of its functionality through Go package which can be imported in other projects. To do that you can use package manager of your choice:
 
 ```bash
 go get github.com/khos2ow/ratelimiter
@@ -270,3 +268,88 @@ func main() {
 //
 // took 2.009465 seconds
 ```
+
+## Developement
+
+### Build Prerequisites
+
+Essentials:
+
+- [make](https://www.gnu.org/software/make/)
+- [go 1.14](https://golang.org/dl/)
+- [golangci-lint](https://github.com/golangci/golangci-lint) (to run lint)
+- [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports) (to sort imports and stricter govet rules)
+
+Nice to haves:
+
+- [gox](https://github.com/mitchellh/gox) (to build binary for multiple OS/ARCH at once)
+- [Tilt](https://tilt.dev) (to deploy on a local dev K8s cluster)
+- [kind](https://kind.sigs.k8s.io) (to spin up a local dev K8s cluster)
+
+### Developing
+
+To checkout ratelimiter for the first time, run:
+
+```bash
+go get -u github.com/khos2ow/ratelimiter
+```
+
+The Go toolchain will checkout the ratelimiter repo somewhere on your GOPATH, usually under `~/go/src/github.com/khos2ow/ratelimiter`.
+
+To run the test suite, run:
+
+```bash
+make test
+```
+
+To check the code format and lint, run:
+
+```bash
+make checkfmt lint
+```
+
+To build ratelimier, there are two options:
+
+1. standalone binary, run:
+
+   ```bash
+   make build
+   ```
+
+   This will build the binary in `./bin/GOOS-GOARCH/ratelimiter`
+
+2. docker image as `khos2ow/ratelimiter:<VERSION>-<COMMIT>`, run:
+
+   ```bash
+   make docker
+   ```
+
+   where `COMMIT` is the output of `git describe --tags` without leading `v`. Alternatively you can override docker tag name with `DOCKER_TAG`:
+
+   ```bash
+   DOCKER_TAG=foo make docker
+   ```
+
+   which builds `khos2ow/ratelimiter:foo`
+
+We're using [Tilt](https://tilt.dev) to have fast feedback loop on developers workstations. In order to do that first you need to create a local Kubernetes cluster (`kind` is recommended):
+
+```bash
+kind create cluster --name ratelimiter
+```
+
+And point KUBECONFIG to the newly created kind cluster, and start `tilt` and visit [http://localhost:8080/](http://localhost:8080/):
+
+```bash
+tilt up
+```
+
+This builds the images and deploys all the manifests in [deploy/](./deploy/) into cluster and keeps watching them and auto-reloads all the changes automatically into the running pods.
+
+Alternatively you can use `docker-compose` too, without the ability to autoreload changes automatically. If there's a change in the code you need to `docker-compose stop` and `docker-compose up --build` to build and deploy those new changes.
+
+## License
+
+Copyright 2020 Khosrow Moossavi
+
+Licensed under the [Apache License, Version 2.0](LICENSE)
