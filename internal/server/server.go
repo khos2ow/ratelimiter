@@ -6,9 +6,10 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
+
 	"github.com/khos2ow/ratelimiter/internal/version"
 	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
-	"github.com/sirupsen/logrus"
 )
 
 // Start starts internal http server and processes the requests.

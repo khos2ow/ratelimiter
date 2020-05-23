@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
 	"github.com/sirupsen/logrus"
+
+	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
 )
 
 type resourcesHandler struct {
