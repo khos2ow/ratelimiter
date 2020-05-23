@@ -19,8 +19,6 @@ COVERAGE_OUT := coverage.out
 # Go variables
 GOOS        ?= $(shell go env GOOS)
 GOARCH      ?= $(shell go env GOARCH)
-GOPKGS      ?= $(shell go list $(MODVENDOR) ./... | grep -v /vendor)
-GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 GOLDFLAGS   :="
 GOLDFLAGS   += -X $(PACKAGE)/internal/version.version=$(GIT_VERSION)
@@ -29,7 +27,9 @@ GOLDFLAGS   += -X $(PACKAGE)/internal/version.buildDate=$(BUILD_DATE)
 GOLDFLAGS   +="
 
 GOBUILD     ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags $(GOLDFLAGS)
-GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run $(MODVENDOR)
+GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) go run
+
+GOIMPORTS_LOCAL_ARG := -local github.com/$(ORG)/$(NAME)
 
 # Docker variables
 DEFAULT_TAG  ?= $(shell echo "$(GIT_VERSION)" | tr -d 'v')
@@ -41,7 +41,7 @@ GITCHGLOG_VERSION := 0.9.1
 GOLANGCI_VERSION  := v1.23.7
 
 .PHONY: all
-all: clean tools verify checkfmt lint test build
+all: clean verify checkfmt lint test build
 
 .PHONY: info
 info: ## Show information about plugin
@@ -77,20 +77,17 @@ lint: ## Run linter
 .PHONY: fmt
 fmt: ## Format all go files
 	@ $(MAKE) --no-print-directory log-$@
-	goimports -w $(GOFILES)
+	goimports -w $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg
 
 .PHONY: checkfmt
-checkfmt: RESULT ?= $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
-checkfmt: SHELL  := /usr/bin/env bash
 checkfmt: ## Check formatting of all go files
 	@ $(MAKE) --no-print-directory log-$@
-	@ echo "$(RESULT)"
-	@ if [ "$(RESULT)" != "OK" ]; then exit 1; fi
+	@ goimports -l $(GOIMPORTS_LOCAL_ARG) main.go cmd internal pkg && echo "OK"
 
 .PHONY: test
 test: ## Run tests
 	@ $(MAKE) --no-print-directory log-$@
-	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v $(GOPKGS)
+	go test -coverprofile=$(COVERAGE_OUT) -covermode=atomic -v ./...
 
 # removed and gitignoreed 'vendor/', not needed anymore #
 .PHONY: vendor

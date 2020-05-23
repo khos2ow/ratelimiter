@@ -4,9 +4,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/khos2ow/ratelimiter/internal/data"
 	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestRuleToString(t *testing.T) {

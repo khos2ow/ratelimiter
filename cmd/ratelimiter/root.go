@@ -7,12 +7,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+
 	"github.com/khos2ow/ratelimiter/internal/data"
 	"github.com/khos2ow/ratelimiter/internal/server"
 	"github.com/khos2ow/ratelimiter/internal/version"
 	"github.com/khos2ow/ratelimiter/pkg/ratelimiter"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 )
 
 type cmdflag struct {

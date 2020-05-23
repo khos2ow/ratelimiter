@@ -3,8 +3,9 @@ package ratelimiter
 import (
 	"fmt"
 
-	"github.com/khos2ow/ratelimiter/internal/version"
 	"github.com/spf13/cobra"
+
+	"github.com/khos2ow/ratelimiter/internal/version"
 )
 
 var versionCmd = &cobra.Command{
