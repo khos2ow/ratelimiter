@@ -1,6 +1,6 @@
 FROM golang:1.14.4-alpine AS builder
 
-RUN apk add --update --no-cache ca-certificates bash make gcc musl-dev git openssh wget curl bzr
+RUN apk add --update --no-cache ca-certificates bash make gcc musl-dev git openssh wget curl
 
 WORKDIR /go/src/ratelimiter
 
