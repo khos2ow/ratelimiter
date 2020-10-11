@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: ratelimiter
-        image: khos2ow/ratelimiter:0.2.2
+        image: khos2ow/ratelimiter:0.2.3
         imagePullPolicy: Always
         command:
           - "ratelimiter"
