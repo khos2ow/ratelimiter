@@ -1,0 +1,48 @@
+project_name: ratelimiter
+
+builds:
+  - main: .
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X internal/version.version={{ .Version }}
+      - -X internal/version.commitHash={{ .ShortCommit }}
+      - -X internal/version.buildDate={{ .Date }}
+    goos:
+      - darwin
+      - linux
+      - freebsd
+      - windows
+    goarch:
+      - amd64
+      - arm
+    ignore:
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm
+
+checksum:
+  name_template: "{{ .ProjectName }}-{{ .Tag }}.sha256sum"
+
+dockers:
+  - dockerfile: scripts/release/Dockerfile
+    image_templates:
+      - "khos2ow/ratelimiter:latest"
+      - "khos2ow/ratelimiter:{{ .RawVersion }}"
+
+archives:
+- format: binary
+# - files:
+#   - none*
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"

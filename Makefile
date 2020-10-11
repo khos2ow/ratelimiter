@@ -101,13 +101,6 @@ build: clean ## Build binary for current OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME) $(PACKAGE)
 
-.PHONY: build-all
-build-all: GOOS   = linux darwin windows freebsd
-build-all: GOARCH = amd64 arm
-build-all: clean ## Build binary for all OS/ARCH
-	@ $(MAKE) --no-print-directory log-$@
-	@ ./scripts/build/build-all-osarch.sh "$(BUILD_DIR)" "$(NAME)" "$(GIT_VERSION)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
-
 .PHONY: docker
 docker: ## Build Docker image
 	@ $(MAKE) --no-print-directory log-$@

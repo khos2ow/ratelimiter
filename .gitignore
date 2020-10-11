@@ -20,3 +20,4 @@ bin
 coverage.txt
 coverage.out
 vendor/
+dist/
