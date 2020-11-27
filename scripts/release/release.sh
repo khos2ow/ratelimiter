@@ -73,7 +73,7 @@ printf "\033[36m==> %s\033[0m\n" "Commit changes for release version v${RELEASE_
 git add README.md deploy/deployment.yaml internal/version/version.go
 git commit -m "Release version v${RELEASE_VERSION}"
 
-if [ "${PUSH}" == "true" ]; then
+if [ "${PUSH_CHANGES}" == "true" ]; then
     printf "\033[36m==> %s\033[0m\n" "Push commits for v${RELEASE_VERSION}"
     git push origin master
 fi
@@ -82,7 +82,7 @@ fi
 printf "\033[36m==> %s\033[0m\n" "Tag release v${RELEASE_VERSION}"
 git tag --annotate --message "v${RELEASE_VERSION} Release" "v${RELEASE_VERSION}"
 
-if [ "${PUSH}" == "true" ]; then
+if [ "${PUSH_CHANGES}" == "true" ]; then
     printf "\033[36m==> %s\033[0m\n" "Push tag release v${RELEASE_VERSION}"
     git push origin v${RELEASE_VERSION}
 fi
@@ -96,7 +96,7 @@ printf "\033[36m==> %s\033[0m\n" "Bump version to v${NEXT_VERSION}-alpha"
 git add internal/version/version.go
 git commit -m "Bump version to v${NEXT_VERSION}-alpha"
 
-if [ "${PUSH}" == "true" ]; then
+if [ "${PUSH_CHANGES}" == "true" ]; then
     printf "\033[36m==> %s\033[0m\n" "Push commits for v${NEXT_VERSION}-alpha"
     git push origin master
 fi

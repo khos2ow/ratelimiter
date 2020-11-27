@@ -144,7 +144,7 @@ tools: ## Install required tools
 PATTERN =
 
 release: VERSION ?= $(shell echo $(GIT_VERSION) | sed 's/^v//' | awk -F'[ .]' '{print $(PATTERN)}')
-release: PUSH    := false
+release: PUSH    ?= false
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
 	@ ./scripts/release/release.sh "$(VERSION)" "$(PUSH)" "$(GIT_VERSION)" "1"
