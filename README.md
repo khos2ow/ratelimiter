@@ -24,7 +24,7 @@
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.2.3
+GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.2.4
 ```
 
 **NOTE:** please use the latest go to do this, ideally go 1.14 or greater.
@@ -38,7 +38,7 @@ $(go env GOPATH)/src/github.com/khos2ow/ratelimiter/bin/$(uname | tr '[:upper:]'
 Stable binaries are also available on the [releases](https://github.com/khos2ow/ratelimiter/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./ratelimiter https://github.com/khos2ow/ratelimiter/releases/download/v0.2.3/ratelimiter-v0.2.3-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./ratelimiter https://github.com/khos2ow/ratelimiter/releases/download/v0.2.4/ratelimiter-v0.2.4-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./ratelimiter
 mv ./ratelimiter /some-dir-in-your-PATH/ratelimiter
 ```
@@ -94,7 +94,7 @@ Docker images are created on each release with the following tag format:
 
 ```text
 khos2ow/ratelimiter:latest
-khos2ow/ratelimiter:0.2.3 # <git-tag-without-leading-v>
+khos2ow/ratelimiter:0.2.4 # <git-tag-without-leading-v>
 ```
 
 also `HEAD` of master which might be unstable:
@@ -110,7 +110,7 @@ docker run -d \
     --name ratelimiter \
     --restart always \
     -p 8080:8080 \
-    khos2ow/ratelimiter:0.2.3 \
+    khos2ow/ratelimiter:0.2.4 \
     --rate-limit=<number> \
     --rate-interval=<number> \
     --rate-timeunit=<time-unit> \
@@ -243,7 +243,7 @@ func main() {
 // hit #1         allowed: true      elapsed: 0.000012 seconds
 // hit #2         allowed: true      elapsed: 0.080239 seconds
 // hit #3         allowed: true      elapsed: 0.160510 seconds
-// hit #4         allowed: true      elapsed: 0.2.3883 seconds
+// hit #4         allowed: true      elapsed: 0.2.4883 seconds
 // hit #5         allowed: true      elapsed: 0.321136 seconds
 // hit #6         allowed: true      elapsed: 0.401298 seconds
 // hit #7         allowed: true      elapsed: 0.481417 seconds
