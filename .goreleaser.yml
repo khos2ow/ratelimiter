@@ -17,6 +17,8 @@ builds:
     goarch:
       - amd64
       - arm
+    goarm:
+      - 7
     ignore:
       - goos: darwin
         goarch: arm
@@ -26,6 +28,9 @@ builds:
 archives:
   - format: binary
     name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+  # - format: zip
+  #   id: homebrew
+  #   name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
 
 checksum:
   name_template: "{{ .ProjectName }}-{{ .Tag }}.sha256sum"
@@ -36,17 +41,17 @@ dockers:
       - "khos2ow/ratelimiter:latest"
       - "khos2ow/ratelimiter:{{ .RawVersion }}"
 
-brews:
-  - tap:
-      owner: khos2ow
-      name: homebrew-tap
-    commit_author:
-      name: khos2ow
-    url_template: "https://github.com/khos2ow/ratelimiter/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    homepage: "https://github.com/khos2ow/"
-    description: "Distributed rate limiting in Go"
-    test: |
-      system "#{bin}/ratelimiter version"
+# brews:
+#   - tap:
+#       owner: khos2ow
+#       name: homebrew-tap
+#     commit_author:
+#       name: khos2ow
+#     url_template: "https://github.com/khos2ow/ratelimiter/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+#     homepage: "https://github.com/khos2ow/"
+#     description: "Distributed rate limiting in Go"
+#     test: |
+#       system "#{bin}/ratelimiter version"
 
 scoop:
   bucket:
