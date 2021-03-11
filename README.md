@@ -27,7 +27,7 @@ The latest version can be installed using `go get`:
 GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.3.1
 ```
 
-**NOTE:** please use the latest go to do this, ideally go 1.14 or greater.
+**NOTE:** please use the latest go to do this, ideally go 1.16 or greater.
 
 This will put `ratelimiter` in `$(go env GOPATH)/bin`. If you encounter the error `ratelimiter: command not found` after installation then you may need to either add that directory to your `$PATH` as shown [here](https://golang.org/doc/code.html#GOPATH) or do a manual installation by cloning the repo and run `make build` from the repository which will put `ratelimiter` in:
 
