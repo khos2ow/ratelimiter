@@ -38,7 +38,7 @@ DOCKER_TAG   ?= $(DEFAULT_TAG)
 
 # Binary versions
 GITCHGLOG_VERSION := 0.9.1
-GOLANGCI_VERSION  := v1.23.7
+GOLANGCI_VERSION  := v1.43.0
 
 .PHONY: all
 all: clean verify checkfmt lint test build
@@ -123,7 +123,7 @@ endif
 .PHONY: golangci
 golangci:
 ifeq (, $(shell which golangci-lint))
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
+	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
 endif
 
 .PHONY: gox
