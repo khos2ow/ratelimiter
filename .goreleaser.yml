@@ -63,6 +63,7 @@ dockers:
   - dockerfile: scripts/release/Dockerfile
     use: buildx
     goarch: amd64
+    skip_push: true
     image_templates:
       - "khos2ow/ratelimiter:latest-amd64"
       - "khos2ow/ratelimiter:{{ .RawVersion }}-amd64"
@@ -72,6 +73,7 @@ dockers:
   - dockerfile: scripts/release/Dockerfile
     use: buildx
     goarch: arm64
+    skip_push: true
     image_templates:
       - "khos2ow/ratelimiter:latest-arm64"
       - "khos2ow/ratelimiter:{{ .RawVersion }}-arm64"
