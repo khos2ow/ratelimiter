@@ -24,8 +24,14 @@ builds:
         goarch: arm
 
 archives:
-  - format: binary
+  - format: tar.gz
     name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
 
 checksum:
   name_template: "{{ .ProjectName }}-{{ .Tag }}.sha256sum"
