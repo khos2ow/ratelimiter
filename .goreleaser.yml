@@ -17,8 +17,6 @@ builds:
     goarch:
       - amd64
       - arm
-    goarm:
-      - 7
     ignore:
       - goos: darwin
         goarch: arm
@@ -28,45 +26,22 @@ builds:
 archives:
   - format: binary
     name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
-  # - format: zip
-  #   id: homebrew
-  #   name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
 
 checksum:
   name_template: "{{ .ProjectName }}-{{ .Tag }}.sha256sum"
 
-dockers:
-  - dockerfile: scripts/release/Dockerfile
-    image_templates:
-      - "khos2ow/ratelimiter:latest"
-      - "khos2ow/ratelimiter:{{ .RawVersion }}"
-
-# brews:
-#   - tap:
-#       owner: khos2ow
-#       name: homebrew-tap
-#     commit_author:
-#       name: khos2ow
-#     url_template: "https://github.com/khos2ow/ratelimiter/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-#     homepage: "https://github.com/khos2ow/"
-#     description: "Distributed rate limiting in Go"
-#     test: |
-#       system "#{bin}/ratelimiter version"
-
-scoop:
-  bucket:
-    owner: khos2ow
-    name: scoop-bucket
-  commit_author:
-    name: khos2ow
-  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-  url_template: "https://github.com/khos2ow/khos2ow/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-  homepage: "https://github.com/khos2ow/"
-  description: "Distributed rate limiting in Go"
-  license: Apache-2.0
-
 snapshot:
   name_template: "{{ .Tag }}-next"
+
+release:
+  github:
+    owner: khos2ow
+    name: ratelimiter
+  footer: |
+    ## Docker images
+
+    - `docker pull khos2ow/ratelimiter:latest`
+    - `docker pull khos2ow/ratelimiter:{{ .RawVersion }}`
 
 changelog:
   sort: asc
@@ -74,3 +49,33 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+dockers:
+  - dockerfile: scripts/release/Dockerfile
+    use: buildx
+    goarch: amd64
+    image_templates:
+      - "khos2ow/ratelimiter:latest-amd64"
+      - "khos2ow/ratelimiter:{{ .RawVersion }}-amd64"
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/amd64"
+  - dockerfile: scripts/release/Dockerfile
+    use: buildx
+    goarch: arm64
+    image_templates:
+      - "khos2ow/ratelimiter:latest-arm64"
+      - "khos2ow/ratelimiter:{{ .RawVersion }}-arm64"
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/arm64"
+
+docker_manifests:
+  - name_template: "khos2ow/ratelimiter:latest"
+    image_templates:
+      - "khos2ow/ratelimiter:latest-amd64"
+      - "khos2ow/ratelimiter:latest-arm64"
+  - name_template: "khos2ow/ratelimiter:{{ .RawVersion }}"
+    image_templates:
+      - "khos2ow/ratelimiter:{{ .RawVersion }}-amd64"
+      - "khos2ow/ratelimiter:{{ .RawVersion }}-arm64"
