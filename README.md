@@ -24,7 +24,7 @@
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="on" go get github.com/khos2ow/ratelimiter@v0.3.3
+GO111MODULE="on" go get github.com/khos2ow/ratelimiter@0.3.4
 ```
 
 **NOTE:** please use the latest go to do this, ideally go 1.16 or greater.
@@ -38,7 +38,7 @@ $(go env GOPATH)/src/github.com/khos2ow/ratelimiter/bin/$(uname | tr '[:upper:]'
 Stable binaries are also available on the [releases](https://github.com/khos2ow/ratelimiter/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./ratelimiter https://github.com/khos2ow/ratelimiter/releases/download/v0.3.3/ratelimiter-v0.3.3-$(uname | tr '[:upper:]' '[:lower:]')-amd64
+curl -Lo ./ratelimiter https://github.com/khos2ow/ratelimiter/releases/download/0.3.4/ratelimiter-0.3.4-$(uname | tr '[:upper:]' '[:lower:]')-amd64
 chmod +x ./ratelimiter
 mv ./ratelimiter /some-dir-in-your-PATH/ratelimiter
 ```
